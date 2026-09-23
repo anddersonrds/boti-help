@@ -7,6 +7,7 @@ import { categories } from "./catalog/catalog.js";
 import { runTriage } from "./classifier/triage.js";
 import { PORT } from "./config.js";
 import { logTriage } from "./logger.js";
+import { buildMetrics } from "./metrics.js";
 import { AcceptedTicketSchema } from "./schema/triage.js";
 import type { Triage } from "./schema/triage.js";
 import { createStore } from "./store.js";
@@ -71,6 +72,10 @@ export function createApp(dependencies: AppDependencies = {}): Express {
     }
 
     response.status(201).json(ticket);
+  });
+
+  app.get("/api/metrics", (_request, response) => {
+    response.json(buildMetrics(store));
   });
 
   return app;
