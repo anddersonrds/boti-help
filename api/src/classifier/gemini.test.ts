@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { ModelError, TIMEOUT_MS, requestClassification } from "./gemini.js";
 import type { ModelCall } from "./gemini.js";
@@ -50,8 +50,28 @@ describe("cliente do modelo", () => {
     expect(await reasonOf(neverResolves, 10)).toBe("timeout");
   });
 
-  it("aborta a chamada ao modelo após 10 segundos", () => {
+  it("fixa em dez segundos o prazo padrão da chamada", () => {
     expect(TIMEOUT_MS).toBe(10_000);
+  });
+
+  it("aborta a chamada ao esgotar o prazo padrão, sem prazo informado", async () => {
+    vi.useFakeTimers();
+
+    try {
+      const neverResolves: ModelCall = () => new Promise(() => {});
+      const settled = requestClassification(TEXT, { call: neverResolves }).catch(
+        (error) => (error as ModelError).reason,
+      );
+      const pending = Symbol("pendente");
+
+      await vi.advanceTimersByTimeAsync(TIMEOUT_MS - 1);
+      expect(await Promise.race([settled, Promise.resolve(pending)])).toBe(pending);
+
+      await vi.advanceTimersByTimeAsync(1);
+      expect(await settled).toBe("timeout");
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("traduz falha de rede em rede", async () => {
