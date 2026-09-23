@@ -1,0 +1,128 @@
+[
+  {
+    "id": "rh_ferias",
+    "name": "Solicitação de férias",
+    "department": "RH",
+    "slaHours": 48,
+    "defaultPriority": "media",
+    "requiredFields": ["startDate", "daysCount"],
+    "description": "Pedido de agendamento, alteração ou cancelamento de período de férias, incluindo venda de dias.",
+    "examples": [
+      "Quero tirar férias em janeiro, ainda não marquei nada com meu gestor",
+      "Preciso adiar minhas férias que começariam no dia 10",
+      "Gostaria de vender 10 dias das minhas férias"
+    ]
+  },
+  {
+    "id": "rh_dependente",
+    "name": "Inclusão ou alteração de dependente",
+    "department": "RH",
+    "slaHours": 72,
+    "defaultPriority": "media",
+    "requiredFields": ["dependentName", "relationship", "dependentBirthDate"],
+    "description": "Inclusão, exclusão ou atualização de dependente no plano de saúde, no imposto de renda ou no cadastro do colaborador.",
+    "examples": [
+      "Meu filho nasceu e preciso incluir ele no plano de saúde",
+      "Quero incluir minha esposa como dependente no imposto de renda",
+      "Preciso tirar meu enteado do plano odontológico"
+    ]
+  },
+  {
+    "id": "rh_folha",
+    "name": "Dúvida ou divergência na folha de pagamento",
+    "department": "RH",
+    "slaHours": 48,
+    "defaultPriority": "alta",
+    "requiredFields": ["referenceMonth", "discrepancyType"],
+    "description": "Questionamento sobre valores do holerite: desconto indevido, hora extra não paga, adicional, benefício ou imposto.",
+    "examples": [
+      "O desconto do vale transporte veio errado no contracheque deste mês",
+      "Minhas horas extras de setembro não entraram na folha",
+      "Recebi um desconto que não reconheço no holerite"
+    ]
+  },
+  {
+    "id": "ti_acesso_sistema",
+    "name": "Acesso a sistema",
+    "department": "TI",
+    "slaHours": 8,
+    "defaultPriority": "alta",
+    "requiredFields": ["systemName", "accessType"],
+    "description": "Senha bloqueada, login que não funciona, permissão faltando ou pedido de acesso novo a um sistema corporativo.",
+    "examples": [
+      "Não consigo entrar no sistema de ponto, minha senha não funciona",
+      "Preciso de acesso ao painel financeiro para fechar o mês",
+      "Minha conta do e-mail foi bloqueada depois de errar a senha"
+    ]
+  },
+  {
+    "id": "ti_equipamento",
+    "name": "Equipamento com defeito",
+    "department": "TI",
+    "slaHours": 24,
+    "defaultPriority": "alta",
+    "requiredFields": ["equipment", "location"],
+    "description": "Notebook, monitor, headset, telefone ou periférico com falha física, sem ligar, superaquecendo ou com defeito de uso.",
+    "examples": [
+      "Meu notebook está desligando sozinho toda hora",
+      "O monitor da estação 14 não liga mais",
+      "O headset do atendimento parou de captar áudio"
+    ]
+  },
+  {
+    "id": "ti_suporte_geral",
+    "name": "Suporte geral de TI",
+    "department": "TI",
+    "slaHours": 24,
+    "defaultPriority": "baixa",
+    "requiredFields": ["needDescription"],
+    "description": "Categoria de menor especificidade. Recebe pedidos de ajuda que não se encaixam em nenhuma outra categoria do catálogo, incluindo instalação de software e dúvidas de uso.",
+    "examples": [
+      "Preciso instalar um programa novo na minha máquina",
+      "Tenho uma dúvida de como usar a ferramenta de aprovação",
+      "Não sei para quem pedir isso, acho que é com TI"
+    ]
+  },
+  {
+    "id": "fac_manutencao",
+    "name": "Manutenção predial",
+    "department": "Facilities",
+    "slaHours": 24,
+    "defaultPriority": "media",
+    "requiredFields": ["location", "issueType"],
+    "description": "Ar-condicionado, elétrica, hidráulica, mobiliário quebrado ou qualquer defeito na estrutura física do escritório.",
+    "examples": [
+      "O ar-condicionado da sala 302 está pingando água no chão",
+      "A lâmpada do corredor do segundo andar queimou",
+      "A cadeira da minha mesa quebrou o encosto"
+    ]
+  },
+  {
+    "id": "fac_limpeza",
+    "name": "Limpeza e conservação",
+    "department": "Facilities",
+    "slaHours": 12,
+    "defaultPriority": "baixa",
+    "requiredFields": ["location"],
+    "description": "Pedido de limpeza pontual, reposição de material de higiene ou copa e recolhimento de descarte.",
+    "examples": [
+      "A copa do terceiro andar está sem papel toalha",
+      "Derrubaram café na sala de reunião grande",
+      "Preciso que recolham umas caixas que ficaram no corredor"
+    ]
+  },
+  {
+    "id": "fac_acesso_predio",
+    "name": "Crachá e acesso ao prédio",
+    "department": "Facilities",
+    "slaHours": 8,
+    "defaultPriority": "alta",
+    "requiredFields": ["requestType", "site"],
+    "description": "Crachá perdido, danificado ou sem permissão, liberação de catraca e autorização de entrada de visitante.",
+    "examples": [
+      "Perdi meu crachá e não consigo passar na catraca",
+      "Preciso liberar a entrada de um fornecedor na sexta",
+      "Meu crachá não abre a porta do andar de operações"
+    ]
+  }
+]
