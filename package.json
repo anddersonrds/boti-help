@@ -1,0 +1,22 @@
+{
+  "name": "boti-help",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "api",
+    "web"
+  ],
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,magenta \"npm -w api run dev\" \"npm -w web run dev\"",
+    "build": "npm -w web run build",
+    "start": "npm -w api run start",
+    "typecheck": "npm -w api run typecheck",
+    "test": "npm -w api run test"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}

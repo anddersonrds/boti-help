@@ -1,0 +1,11 @@
+node_modules/
+dist/
+build/
+.env
+.env.local
+*.log
+
+# Artefatos de planejamento, não fazem parte da entrega
+.specs/
+ideia.md
+vaga.md
