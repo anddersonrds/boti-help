@@ -1,0 +1,16 @@
+services:
+  - type: web
+    runtime: node
+    name: botihelp
+    plan: free
+    healthCheckPath: /api/metrics
+    # tsx and vite are dev dependencies but the process needs them, so nothing is pruned.
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: MOCK_LLM
+        value: "0"
