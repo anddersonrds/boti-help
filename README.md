@@ -129,14 +129,14 @@ npm run typecheck
 | ---- | --------- |
 | `POST /api/triage` | Recebe `{ text }` e devolve a triagem validada. Texto fora de 10 a 2000 caracteres responde 400 sem chamar o modelo. |
 | `POST /api/tickets` | Recebe o payload aceito, registra o chamado e devolve o protocolo `BOTI-AAAA-NNNN`. |
-| `GET /api/catalog` | Catálogo completo, usado pela interface para recalcular departamento, SLA e campos obrigatórios ao trocar a categoria. |
+| `GET /api/catalog` | Catálogo completo mais o rótulo e a pergunta de cada campo, usados pela interface para recalcular departamento, SLA e campos obrigatórios ao trocar a categoria. |
 | `GET /api/metrics` | Total de triagens, total de chamados, taxa de aceite sem edição e campos mais corrigidos. |
 
 ## Estrutura
 
 ```
 api/src
-  catalog/      catálogo de categorias e carregador tipado
+  catalog/      catálogo de categorias, carregador tipado e texto dos campos
   classifier/   prompt, cliente do modelo, classificador mock e orquestração
   schema/       contrato Zod e schema derivado para o modelo
   server.ts     rotas HTTP
