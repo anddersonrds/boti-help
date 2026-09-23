@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { ModelError, requestClassification } from "./gemini.js";
+import { ModelError, TIMEOUT_MS, requestClassification } from "./gemini.js";
 import type { ModelCall } from "./gemini.js";
 import { TEXT_OPEN_TAG } from "./prompt.js";
 
@@ -48,6 +48,10 @@ describe("cliente do modelo", () => {
     const neverResolves: ModelCall = () => new Promise(() => {});
 
     expect(await reasonOf(neverResolves, 10)).toBe("timeout");
+  });
+
+  it("aborta a chamada ao modelo após 10 segundos", () => {
+    expect(TIMEOUT_MS).toBe(10_000);
   });
 
   it("traduz falha de rede em rede", async () => {
