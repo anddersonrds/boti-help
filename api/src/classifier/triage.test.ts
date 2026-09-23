@@ -110,6 +110,21 @@ describe("orquestração da triagem", () => {
     }
   });
 
+  it("pergunta pelo primeiro campo obrigatório da categoria quando é ele que falta", async () => {
+    const model = replay(
+      JSON.stringify({
+        ...validSuggestion,
+        categoryId: "rh_dependente",
+        fields: { relationship: "filha", dependentBirthDate: "14 de março de 2020" },
+      }),
+    );
+
+    const triage = await runTriage(TEXT, { useMock: false, callModel: model.call });
+
+    expect(triage.status).toBe("incompleto");
+    expect(triage.missingQuestions.map((item) => item.field)).toEqual(["dependentName"]);
+  });
+
   it("produz completo com lista vazia quando todos os campos obrigatórios estão presentes", async () => {
     const model = replay(JSON.stringify(validSuggestion));
 
