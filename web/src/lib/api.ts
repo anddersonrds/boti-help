@@ -21,6 +21,17 @@ export type Category = {
   examples: string[];
 };
 
+/** Wording of a required field: the form label and the question asked when it is empty. */
+export type FieldDefinition = {
+  label: string;
+  question: string;
+};
+
+export type Catalog = {
+  categories: Category[];
+  fieldDefinitions: Record<string, FieldDefinition>;
+};
+
 export type MissingQuestion = {
   field: string;
   question: string;
@@ -102,9 +113,8 @@ function post<T>(path: string, payload: unknown): Promise<T> {
   });
 }
 
-export async function fetchCatalog(): Promise<Category[]> {
-  const { categories } = await request<{ categories: Category[] }>("/api/catalog");
-  return categories;
+export function fetchCatalog(): Promise<Catalog> {
+  return request<Catalog>("/api/catalog");
 }
 
 export function requestTriage(text: string): Promise<Triage> {

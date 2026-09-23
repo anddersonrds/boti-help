@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { PRIORITIES } from "../lib/api";
-import type { AcceptedTicket, Category, FallbackReason, Priority, Triage } from "../lib/api";
+import type { AcceptedTicket, Category, FallbackReason, FieldDefinition, Priority, Triage } from "../lib/api";
 
 const PRIORITY_LABELS: Record<Priority, string> = {
   baixa: "Baixa",
@@ -22,12 +22,20 @@ const FALLBACK_LABELS: Record<FallbackReason, string> = {
 type ResultCardProps = {
   triage: Triage;
   categories: Category[];
+  fieldDefinitions: Record<string, FieldDefinition>;
   onAccept: (payload: AcceptedTicket) => void;
   isSubmitting: boolean;
   error: string | null;
 };
 
-export default function ResultCard({ triage, categories, onAccept, isSubmitting, error }: ResultCardProps) {
+export default function ResultCard({
+  triage,
+  categories,
+  fieldDefinitions,
+  onAccept,
+  isSubmitting,
+  error,
+}: ResultCardProps) {
   const [categoryId, setCategoryId] = useState(triage.categoryId ?? "");
   const [priority, setPriority] = useState<Priority>(triage.priority);
   const [title, setTitle] = useState(triage.title);
@@ -47,8 +55,10 @@ export default function ResultCard({ triage, categories, onAccept, isSubmitting,
     summary.trim().length > 0 &&
     !isSubmitting;
 
-  function questionFor(field: string): string {
-    return triage.missingQuestions.find((question) => question.field === field)?.question ?? field;
+  // Wording comes from the catalog, so it survives a category change and covers
+  // fields the model already filled, which have no question in the triage.
+  function definitionFor(field: string): FieldDefinition {
+    return fieldDefinitions[field] ?? { label: field, question: "" };
   }
 
   /** Answers are merged into the payload locally, without a second triage call. */
@@ -152,12 +162,14 @@ export default function ResultCard({ triage, categories, onAccept, isSubmitting,
           <div className="mt-2 grid gap-3 sm:grid-cols-2">
             {requiredFields.map((field) => {
               const isPending = pendingFields.includes(field);
+              const definition = definitionFor(field);
 
               return (
                 <label key={field} className="block text-sm">
-                  <span className={isPending ? "text-amber-700" : "text-slate-600"}>{questionFor(field)}</span>
+                  <span className={isPending ? "text-amber-700" : "text-slate-600"}>{definition.label}</span>
                   <input
                     value={fields[field] ?? ""}
+                    placeholder={isPending ? definition.question : ""}
                     onChange={(event) => setField(field, event.target.value)}
                     className={`mt-1 w-full rounded-lg border px-3 py-2 text-sm text-slate-900 outline-none focus:border-slate-500 ${
                       isPending ? "border-amber-400 bg-amber-50" : "border-slate-300"

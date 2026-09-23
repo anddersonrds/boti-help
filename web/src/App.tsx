@@ -5,7 +5,7 @@ import ResultCard from "./components/ResultCard";
 import TicketReceipt from "./components/TicketReceipt";
 import TriageForm from "./components/TriageForm";
 import { ApiError, fetchCatalog, fetchMetrics, openTicket, requestTriage } from "./lib/api";
-import type { AcceptedTicket, Category, Metrics, Ticket, Triage } from "./lib/api";
+import type { AcceptedTicket, Catalog, Metrics, Ticket, Triage } from "./lib/api";
 
 const ERROR_MESSAGES: Record<string, string> = {
   texto_invalido: "O texto precisa ter entre 10 e 2000 caracteres.",
@@ -22,7 +22,7 @@ function messageFor(error: unknown): string {
 }
 
 export default function App() {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [catalog, setCatalog] = useState<Catalog>({ categories: [], fieldDefinitions: {} });
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [triage, setTriage] = useState<Triage | null>(null);
   const [ticket, setTicket] = useState<Ticket | null>(null);
@@ -41,7 +41,7 @@ export default function App() {
 
   useEffect(() => {
     fetchCatalog()
-      .then(setCategories)
+      .then(setCatalog)
       .catch(() => undefined);
     refreshMetrics();
   }, [refreshMetrics]);
@@ -100,7 +100,8 @@ export default function App() {
             <ResultCard
               key={triage.id}
               triage={triage}
-              categories={categories}
+              categories={catalog.categories}
+              fieldDefinitions={catalog.fieldDefinitions}
               onAccept={handleAccept}
               isSubmitting={isSubmitting}
               error={ticketError}

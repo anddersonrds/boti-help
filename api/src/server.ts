@@ -6,6 +6,7 @@ import express from "express";
 import type { Express } from "express";
 
 import { categories } from "./catalog/catalog.js";
+import { FIELD_DEFINITIONS } from "./catalog/fields.js";
 import { runTriage } from "./classifier/triage.js";
 import { PORT } from "./config.js";
 import { logTriage } from "./logger.js";
@@ -37,9 +38,12 @@ export function createApp(dependencies: AppDependencies = {}): Express {
 
   app.use(express.json({ limit: "64kb" }));
 
-  /** The interface resolves department, SLA and required fields from this locally. */
+  /**
+   * The interface resolves department, SLA, required fields and their wording
+   * from this locally, so changing the category never leaves a field unlabelled.
+   */
   app.get("/api/catalog", (_request, response) => {
-    response.json({ categories });
+    response.json({ categories, fieldDefinitions: FIELD_DEFINITIONS });
   });
 
   app.post("/api/triage", async (request, response) => {

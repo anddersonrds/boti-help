@@ -1,34 +1,12 @@
 import { randomUUID } from "node:crypto";
 
 import { getCategory } from "../catalog/catalog.js";
+import { getFieldDefinition } from "../catalog/fields.js";
 import { MOCK_LLM } from "../config.js";
 import { ModelSuggestionSchema } from "../schema/triage.js";
 import type { MissingQuestion, ModelSuggestion, Triage } from "../schema/triage.js";
 import { ModelError, requestClassification } from "./gemini.js";
 import { classifyWithMock } from "./mock.js";
-
-/** One question per required field in the catalog. */
-const FIELD_QUESTIONS: Record<string, string> = {
-  startDate: "Em que data as férias começam?",
-  daysCount: "Quantos dias você quer tirar?",
-  dependentName: "Qual é o nome completo do dependente?",
-  relationship: "Qual é o grau de parentesco com o dependente?",
-  dependentBirthDate: "Qual é a data de nascimento do dependente?",
-  referenceMonth: "A qual mês de referência a divergência se refere?",
-  discrepancyType: "Que tipo de divergência você identificou no holerite?",
-  systemName: "Qual é o sistema em que você precisa de acesso?",
-  accessType: "Você precisa de acesso novo, desbloqueio ou mais permissão?",
-  equipment: "Qual é o equipamento com defeito?",
-  location: "Em qual local, andar ou sala isso acontece?",
-  needDescription: "Pode descrever com mais detalhe o que você precisa?",
-  issueType: "Qual é o tipo de problema encontrado?",
-  requestType: "Você precisa de segunda via, liberação ou autorização de visitante?",
-  site: "Em qual unidade ou prédio?",
-};
-
-function questionFor(field: string): string {
-  return FIELD_QUESTIONS[field] ?? `Pode informar o valor de ${field}?`;
-}
 
 export type TriageDependencies = {
   useMock?: boolean;
@@ -50,7 +28,7 @@ function enrich(suggestion: ModelSuggestion, source: Triage["source"], fallbackR
   const requiredFields = category?.requiredFields ?? [];
   const missingQuestions: MissingQuestion[] = requiredFields
     .filter((field) => !suggestion.fields[field]?.trim())
-    .map((field) => ({ field, question: questionFor(field) }));
+    .map((field) => ({ field, question: getFieldDefinition(field).question }));
 
   return {
     id: randomUUID(),
