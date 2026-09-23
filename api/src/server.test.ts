@@ -88,6 +88,16 @@ describe("endpoint de triagem", () => {
     expect(response.body.slaHours).toBe(category?.slaHours);
   });
 
+  it("classifica pelo mock quando MOCK_LLM está definida, sem chamar o modelo", async () => {
+    const response = await request(createApp())
+      .post("/api/triage")
+      .send({ text: EXAMPLE_TEXTS[0] });
+
+    expect(response.status).toBe(200);
+    expect(response.body.source).toBe("mock");
+    expect(response.body.fallbackReason).toBe("flag_manual");
+  });
+
   it("não devolve a chave do modelo em nenhuma resposta", async () => {
     const app = createApp();
 
