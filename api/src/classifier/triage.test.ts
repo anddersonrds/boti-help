@@ -110,6 +110,17 @@ describe("orquestração da triagem", () => {
     }
   });
 
+  it("trata campo do contrato ausente como falha de validação, não como triagem incompleta", async () => {
+    const semTitulo = { ...validSuggestion, title: undefined };
+    const model = replay(JSON.stringify(semTitulo), JSON.stringify(validSuggestion));
+
+    const triage = await runTriage(TEXT, { useMock: false, callModel: model.call });
+
+    expect(model.calls()).toBe(2);
+    expect(triage.status).toBe("completo");
+    expect(triage.title).toBe(validSuggestion.title);
+  });
+
   it("pergunta pelo primeiro campo obrigatório da categoria quando é ele que falta", async () => {
     const model = replay(
       JSON.stringify({
