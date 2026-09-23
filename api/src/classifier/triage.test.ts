@@ -136,6 +136,20 @@ describe("orquestração da triagem", () => {
     expect(triage.missingQuestions.map((item) => item.field)).toEqual(["dependentName"]);
   });
 
+  it("trata campo obrigatório preenchido só com espaços como ausente", async () => {
+    const model = replay(
+      JSON.stringify({
+        ...validSuggestion,
+        fields: { startDate: "   ", daysCount: "10" },
+      }),
+    );
+
+    const triage = await runTriage(TEXT, { useMock: false, callModel: model.call });
+
+    expect(triage.status).toBe("incompleto");
+    expect(triage.missingQuestions.map((item) => item.field)).toEqual(["startDate"]);
+  });
+
   it("produz completo com lista vazia quando todos os campos obrigatórios estão presentes", async () => {
     const model = replay(JSON.stringify(validSuggestion));
 
