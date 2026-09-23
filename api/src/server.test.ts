@@ -121,4 +121,16 @@ describe("endpoint do catálogo", () => {
       requiredFields: ["startDate", "daysCount"],
     });
   });
+
+  it("expõe rótulo em português para todo campo obrigatório das categorias", async () => {
+    const response = await request(createApp()).get("/api/catalog");
+    const fields: string[] = response.body.categories.flatMap(
+      (category: { requiredFields: string[] }) => category.requiredFields,
+    );
+
+    for (const field of fields) {
+      expect(response.body.fieldDefinitions[field], field).toBeDefined();
+      expect(response.body.fieldDefinitions[field].label).not.toBe(field);
+    }
+  });
 });
