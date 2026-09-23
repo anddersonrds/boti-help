@@ -88,6 +88,7 @@ Requer Node 20.19 ou superior.
 
 ```bash
 npm install
+cp .env.example .env
 npm run dev
 ```
 
@@ -96,14 +97,10 @@ rotas `/api` já configurado no Vite.
 
 Sem `GEMINI_API_KEY` definida a aplicação sobe do mesmo jeito e opera pelo classificador mock.
 A interface traz quatro exemplos prontos em um clique, e o mock responde de forma determinística
-para os quatro. Com o modelo real, ou para forçar o mock mesmo com chave definida:
+para os quatro. Para forçar o mock mesmo com chave definida, use `MOCK_LLM=1`.
 
-```bash
-GEMINI_API_KEY=sua-chave npm run dev
-MOCK_LLM=1 npm run dev
-```
-
-As variáveis são lidas do ambiente do processo. `.env.example` lista quais existem:
+O `.env` da raiz é carregado pelo processo, e qualquer variável já presente no ambiente tem
+precedência sobre ele:
 
 | Variável | Para que serve |
 | -------- | -------------- |
