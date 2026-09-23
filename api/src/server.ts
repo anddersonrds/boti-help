@@ -10,6 +10,7 @@ import { logTriage } from "./logger.js";
 import { buildMetrics } from "./metrics.js";
 import { AcceptedTicketSchema } from "./schema/triage.js";
 import type { Triage } from "./schema/triage.js";
+import { serveWebBuild } from "./static.js";
 import { createStore } from "./store.js";
 import type { Store } from "./store.js";
 
@@ -77,6 +78,8 @@ export function createApp(dependencies: AppDependencies = {}): Express {
   app.get("/api/metrics", (_request, response) => {
     response.json(buildMetrics(store));
   });
+
+  serveWebBuild(app);
 
   return app;
 }
